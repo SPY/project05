@@ -1,0 +1,23 @@
+{
+  "name": "project05-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "webpack-dev-server --progress --colors --port 8888 --host 0.0.0.0",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ilya Rezvov",
+  "license": "ISC",
+  "devDependencies": {
+    "awesome-typescript-loader": "^0.15.9",
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^0.9.1",
+    "less": "^2.5.3",
+    "less-loader": "^2.2.2",
+    "matter-js": "^0.8.0",
+    "typescript": "^1.8.0-dev.20151226",
+    "webpack": "^1.12.9",
+    "webpack-dev-server": "^1.14.0"
+  }
+}
