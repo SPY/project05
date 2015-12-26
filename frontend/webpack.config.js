@@ -24,12 +24,12 @@ module.exports = {
 
   // Add loader for .ts files.
   module: {
-    // preLoaders: [
-    //   {
-    //     test: /\.tsx?$/,
-    //     loader: 'tslint'
-    //   }
-    // ],
+    preLoaders: [
+      {
+        test: /\.tsx?$/,
+        loader: 'tslint'
+      }
+    ],
     loaders: [
       {
         test: /\.tsx?$/,

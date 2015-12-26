@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "webpack-dev-server --progress --colors --port 8888 --host 0.0.0.0",
+    "build": "NODE_ENV=production webpack -p",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ilya Rezvov",
@@ -16,7 +17,9 @@
     "less": "^2.5.3",
     "less-loader": "^2.2.2",
     "matter-js": "^0.8.0",
-    "typescript": "^1.8.0-dev.20151226",
+    "tslint": "^3.2.1",
+    "tslint-loader": "^2.1.0",
+    "typescript": "^1.7.5",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
   }
