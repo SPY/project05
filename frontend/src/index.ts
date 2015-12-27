@@ -104,3 +104,49 @@ document.body.addEventListener('keyup', (event: KeyboardEvent) => {
     update()
   }
 })
+
+import {World} from './World';
+import {GameMap} from './GameMap';
+import {Vec2d} from '../../common/math/Vec2d';
+import {Renderer} from './Renderer';
+import {Character} from './Character';
+
+let textMap = [
+    '__#___#__#___#__#####___________________',
+    '___#_#____#_#______#____________________',
+    '____#______#______#_____________________',
+    '___#_#____#______#______________________',
+    '__#___#__#______#####___________________',
+    '________________________________________',
+    '________________________________________',
+    '________________________________________',
+    '________________________________________',
+    '________S_____________###############___',
+    '________________________________________',
+    '___###############______________________',
+    '____________________________S___________',
+    '________________________________________',
+    '_____________########################___',
+    '________________________________________'
+].join('\n');
+
+let gameMap = new GameMap(textMap, 2, 1)
+let world = new World(gameMap);
+let player = new Character(gameMap.getSpawnPlace());
+world.addCharacter(player);
+
+let width = 400;
+let height = 300;
+let canvas = document.createElement('canvas');
+canvas.width = width;
+canvas.height = height;
+canvas.style.border = '1px solid black';
+
+document.body.appendChild(canvas);
+
+let canvasCtx = canvas.getContext('2d')
+var camera = new Vec2d(30, 10);
+
+var renderer = new Renderer(canvasCtx, width, height, world, camera);
+
+renderer.render();
