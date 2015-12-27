@@ -20,7 +20,8 @@ export class Game {
   join(client: ClientConnection) {
     const player = new Player(client, 'player' + this.playerId++)
     this.players.push(player)
-    client.helloEvent.on(this.onHello.bind(this, player))
+    client.helloEvent.on(this.onPlayerHello.bind(this, player))
+    client.closeEvent.on(this.onPlayerLeave.bind(this, player))
     
     if (!this.syncTimer) {
       const syncer = () => {
@@ -31,8 +32,13 @@ export class Game {
     }
   }
   
-  onHello(from: Player, hello: HelloMsg) {
+  onPlayerHello(from: Player, hello: HelloMsg) {
     from.welcome(this.collectSync())
+  }
+  
+  onPlayerLeave(player: Player) {
+    this.players = this.players.filter(p => p !== player)
+    this.broadcastSync()
   }
   
   collectSync(): SyncMsg {

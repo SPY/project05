@@ -13,7 +13,8 @@ import {
 import {EventEmitter, EventListener} from '../../common/Event'
 
 export class ClientConnection {
-  private _helloEvent = new EventEmitter<HelloMsg>()
+  private _helloEvent = new EventEmitter<HelloMsg>();
+  private _closeEvent = new EventEmitter<void>();
   private _changeStateEvent = new EventEmitter<ChangeStateMsg>()
   
   constructor(private ws: WSConnection) {
@@ -21,7 +22,7 @@ export class ClientConnection {
     ws.on('close', this.onClose.bind(this))
   }
   
-  onMessage(msg: WSMessage) {
+  protected onMessage(msg: WSMessage) {
     const {type, payload} = JSON.parse(msg.utf8Data)
     switch (type) {
       case ClientMessageType.HelloMsg:
@@ -33,7 +34,9 @@ export class ClientConnection {
     }
   }
   
-  onClose() {
+  protected onClose() {
+    this._closeEvent.trigger()
+    this._closeEvent.unsubscribeAll()
     this._helloEvent.unsubscribeAll()
   }
   
@@ -43,6 +46,10 @@ export class ClientConnection {
   
   get changeStateEvent(): EventListener<ChangeStateMsg> {
     return this._changeStateEvent.listener
+  }
+  
+  get closeEvent(): EventListener<void> {
+    return this._closeEvent.listener
   }
   
   send(msg: ServerMessageContainer) {
