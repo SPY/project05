@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "grunt",
-    "dev": "node --harmony build/index.js"
+    "dev": "node build/backend/src/index.js"
   },
   "author": "Ilya Rezvov",
   "license": "ISC",

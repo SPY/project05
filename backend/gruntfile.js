@@ -4,10 +4,10 @@ module.exports = function(grunt) {
     ts: {
       default: {
         src: ['src/**/*.ts'],
-        outDir: 'build',
+        outDir: './build',
         options: {
           module: "commonjs",
-          target: "es6",
+          target: "es5",
           noImplicitAny: true
         }
       }
