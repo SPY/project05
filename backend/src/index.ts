@@ -3,100 +3,45 @@
 'use strict'
 
 import * as express from 'express'
-import {
-  server as WebSocketServer,
-  connection as WSConnection,
-  IMessage as WSMessage
-} from 'websocket'
+import {server as WebSocketServer} from 'websocket'
 import {createServer} from 'http'
-import {
-  ServerMessage,
-  HelloMsg,
-  ClientMessageType,
-  ServerMessageType,
-  ServerMessageContainer
-} from '../../common/Protocol'
-import {EventEmitter, EventListener} from '../../common/Event'
+import {Game} from './Game'
+import {CONNECTION_PORT, API_PORT} from '../../common/Config'
+import {MAPS_METHOD, GAME_METHOD, GAMES_METHOD} from '../../common/API'
 
 const app = express()
 
-app.get('/maps', (req, res) => {
+app.get(MAPS_METHOD, (req, res) => {
   res.status(200).json([])
 })
 
-app.get('/games', (req, res) => {
+app.get(GAMES_METHOD, (req, res) => {
   res.status(200).json([])
 })
 
-app.listen(8890)
+app.listen(API_PORT)
+
+// websockets
 
 const httpServer = createServer()
 const ws = new WebSocketServer({ httpServer })
 
-class Game {
-  private connections: ClientConnection[] = []
-  private playerId = 1
-  constructor(public id: string) {}
-  
-  addClient(ws: WSConnection) {
-    const client = new ClientConnection(ws)
-    this.connections.push(client)
-    client.helloEvent.on(this.onHello.bind(this, client))
-  }
-  
-  onHello(from: ClientConnection, hello: HelloMsg) {
-    from.send({
-      type: ServerMessageType.GameEnterMsg,
-      payload: {
-        playerId: 'player' + this.playerId++,
-        objects: []
-      }
-    })
-  }
+interface Games {
+  [id: string]: Game;
 }
 
-class ClientConnection {
-  private _helloEvent = new EventEmitter<HelloMsg>()
-  
-  constructor(private ws: WSConnection) {
-    ws.on('message', this.onMessage.bind(this))
-    ws.on('close', this.onClose.bind(this))
-  }
-  
-  onMessage(msg: WSMessage) {
-    const {type, payload} = JSON.parse(msg.utf8Data)
-    switch (type) {
-      case ClientMessageType.HelloMsg:
-        this._helloEvent.trigger(payload)
-        break
-    }
-  }
-  
-  onClose() {
-    this._helloEvent.unsubscribeAll()
-  }
-  
-  get helloEvent(): EventListener<HelloMsg> {
-    return this._helloEvent.listener
-  }
-  
-  send(msg: ServerMessageContainer) {
-    this.ws.send(JSON.stringify(msg))
-  }
-}
-
-const games: { [id: string]: Game } = {
+const games: Games = {
   ['42']: new Game('42')
 }
 
 ws.on('request', request => {
   const {pathname, query: {id}} = request.resourceURL
-  if (pathname === '/game' && id in games) {
-    games[id].addClient(request.accept())
+  if (pathname === GAME_METHOD && id in games) {
+    games[id].joinClient(request.accept())
   }
   else {
     request.reject(404, 'Game with such id doesn\'t exist')
   }
 })
 
-httpServer.listen(8889)
+httpServer.listen(CONNECTION_PORT)
