@@ -2,9 +2,11 @@
 
 'use strict'
 
-import {readdir} from 'fs'
 import * as express from 'express'
+import {server as WebSocketServer} from 'websocket'
+import {createServer} from 'http'
 
+const server = createServer()
 const app = express()
 
 app.get('/maps', (req, res) => {
@@ -15,4 +17,13 @@ app.get('/games', (req, res) => {
     res.status(200).json([])
 })
 
-app.listen(8890)
+server.on('request', app)
+server.listen(8890)
+
+const ws = new WebSocketServer({
+    httpServer: server
+})
+
+ws.on('connect', connection => {
+    console.log('somebody connected')
+})
