@@ -14,6 +14,7 @@ import {
   MAP_METHOD, MapReq, MapRes
 } from '../../common/API'
 import * as bodyParser from 'body-parser'
+import {ClientConnection} from './ClientConnection'
 
 // api endpoint
 const app = express()
@@ -53,7 +54,8 @@ const games: Games = {
 ws.on('request', request => {
   const {pathname, query: {id}} = request.resourceURL
   if (pathname === GAME_ENDPOINT && id in games) {
-    games[id].joinClient(request.accept())
+    const connection = new ClientConnection(request.accept())
+    games[id].join(connection)
   }
   else {
     request.reject(404, 'Game with such id doesn\'t exist')

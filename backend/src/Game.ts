@@ -1,28 +1,51 @@
-import {connection as WSConnection} from 'websocket'
-import {ClientConnection} from './ClientConnection'
 import {
   HelloMsg,
-  ServerMessageType,
+  SyncMsg,
+  ServerMessageContainer,
+  GameObjectType
 } from '../../common/Protocol'
+import {connection as WSConnection} from 'websocket'
+import {Player} from './Player'
+import {ClientConnection} from './ClientConnection'
+
+const SYNC_INTERVAL = 200
 
 export class Game {
-  private connections: ClientConnection[] = []
-  private playerId = 1
+  private players: Player[] = [];
+  private playerId = 1;
+  private syncTimer: NodeJS.Timer;
+
   constructor(public id: string) {}
   
-  joinClient(ws: WSConnection) {
-    const client = new ClientConnection(ws)
-    this.connections.push(client)
-    client.helloEvent.on(this.onHello.bind(this, client))
+  join(client: ClientConnection) {
+    const player = new Player(client, 'player' + this.playerId++)
+    this.players.push(player)
+    client.helloEvent.on(this.onHello.bind(this, player))
+    
+    if (!this.syncTimer) {
+      const syncer = () => {
+        this.broadcastSync()
+        this.syncTimer = setTimeout(syncer, SYNC_INTERVAL)
+      }
+      this.syncTimer = setTimeout(syncer, SYNC_INTERVAL)
+    }
   }
   
-  onHello(from: ClientConnection, hello: HelloMsg) {
-    from.send({
-      type: ServerMessageType.GameEnterMsg,
-      payload: {
-        playerId: 'player' + this.playerId++,
-        objects: []
-      }
-    })
+  onHello(from: Player, hello: HelloMsg) {
+    from.welcome(this.collectSync())
+  }
+  
+  collectSync(): SyncMsg {
+    return {
+      objects: this.players.map(player => ({
+        type: GameObjectType.Player,
+        state: player.state()
+      }))
+    }
+  }
+  
+  broadcastSync() {
+    const sync = this.collectSync()
+    this.players.forEach(player => player.sync(sync))
   }
 }

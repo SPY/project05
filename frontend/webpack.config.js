@@ -8,7 +8,8 @@ module.exports = {
   // Currently we need to add '.ts' to resolve.extensions array.
   resolve: {
     alias: {
-      src: path.join(__dirname, 'src')
+      src: path.join(__dirname, 'src'),
+      common: path.join(__dirname, '../common'),
     },
     extensions: ['', '.ts', '.tsx', '.webpack.js', '.web.js', '.js']
   },

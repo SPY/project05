@@ -28,7 +28,7 @@ export interface GameObjectDescription {
 
 // Server messages
 export enum ServerMessageType {
-  SyncMsg,
+  SyncMsg = 100,
   GameEnterMsg
 }
 
@@ -50,7 +50,7 @@ export interface ServerMessageContainer {
 // Client messages
 
 export enum ClientMessageType {
-  HelloMsg
+  HelloMsg = 200
 }
 
 export interface HelloMsg {

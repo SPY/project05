@@ -1,8 +1,8 @@
 /// <reference path="../typings/tsd.d.ts" />
 
-import {ClientMessageType} from '../../common/Protocol'
-import {EventEmitter, EventListener} from '../../common/Event'
-import {CONNECTION_PORT} from '../../common/Config'
+import {ClientMessageType} from 'common/Protocol'
+import {EventEmitter, EventListener} from 'common/Event'
+import {CONNECTION_PORT} from 'common/Config'
 
 import {GameConnection} from './GameConnection'
 

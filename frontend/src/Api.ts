@@ -2,7 +2,7 @@ import {
   MAPS_METHOD, MapsRes,
   GAMES_METHOD, GamesRes,
   MAP_METHOD, MapReq, MapRes
-} from '../../common/API'
+} from 'common/API'
 
 function checkStatus(response: Response) {
   if (response.status >= 200 && response.status < 300) {

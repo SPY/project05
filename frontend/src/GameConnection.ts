@@ -5,10 +5,10 @@ import {
   ServerMessageType,
   SyncMsg,
   GameEnterMsg
-} from '../../common/Protocol'
-import {EventEmitter, EventListener} from '../../common/Event'
-import {CONNECTION_PORT} from '../../common/Config'
-import {GAME_ENDPOINT} from '../../common/API'
+} from 'common/Protocol'
+import {EventEmitter, EventListener} from 'common/Event'
+import {CONNECTION_PORT} from 'common/Config'
+import {GAME_ENDPOINT} from 'common/API'
 
 export class GameConnection {
   private ws: WebSocket;

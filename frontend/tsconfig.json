@@ -3,7 +3,7 @@
         "module": "commonjs",
         "target": "es5",
         "noImplicitAny": true,
-        "rootDir": ".",
+        "rootDir": "../",
         "sourceMap": true,
         "jsx": "react",
         "experimentalDecorators": true,
