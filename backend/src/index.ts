@@ -7,21 +7,37 @@ import {server as WebSocketServer} from 'websocket'
 import {createServer} from 'http'
 import {Game} from './Game'
 import {CONNECTION_PORT, API_PORT} from '../../common/Config'
-import {MAPS_METHOD, GAME_METHOD, GAMES_METHOD} from '../../common/API'
+import {
+  GAME_ENDPOINT, 
+  MAPS_METHOD, MapsRes,
+  GAMES_METHOD, GamesRes,
+  MAP_METHOD, MapReq, MapRes
+} from '../../common/API'
+import * as bodyParser from 'body-parser'
 
+// api endpoint
 const app = express()
+app.use(bodyParser.json())
 
 app.get(MAPS_METHOD, (req, res) => {
-  res.status(200).json([])
+  const data: MapsRes = { maps: [] }
+  res.status(200).json(data)
 })
 
 app.get(GAMES_METHOD, (req, res) => {
-  res.status(200).json([])
+  const data: GamesRes = { games: [] }
+  res.status(200).json(data)
+})
+
+app.get(MAP_METHOD, (req, res) => {
+  const {id}: MapReq = req.query
+  const data: MapRes = { id }
+  res.status(200).json(data)
 })
 
 app.listen(API_PORT)
 
-// websockets
+// websocket endpoint
 
 const httpServer = createServer()
 const ws = new WebSocketServer({ httpServer })
@@ -36,7 +52,7 @@ const games: Games = {
 
 ws.on('request', request => {
   const {pathname, query: {id}} = request.resourceURL
-  if (pathname === GAME_METHOD && id in games) {
+  if (pathname === GAME_ENDPOINT && id in games) {
     games[id].joinClient(request.accept())
   }
   else {
