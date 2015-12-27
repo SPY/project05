@@ -6,13 +6,15 @@ import {
 import {
   HelloMsg,
   ClientMessageType,
-  ServerMessageContainer
+  ServerMessageContainer,
+  ChangeStateMsg
 } from '../../common/Protocol'
 
 import {EventEmitter, EventListener} from '../../common/Event'
 
 export class ClientConnection {
   private _helloEvent = new EventEmitter<HelloMsg>()
+  private _changeStateEvent = new EventEmitter<ChangeStateMsg>()
   
   constructor(private ws: WSConnection) {
     ws.on('message', this.onMessage.bind(this))
@@ -25,6 +27,9 @@ export class ClientConnection {
       case ClientMessageType.HelloMsg:
         this._helloEvent.trigger(payload)
         break
+      case ClientMessageType.ChangeStateMsg:
+        this._changeStateEvent.trigger(payload)
+        break
     }
   }
   
@@ -34,6 +39,10 @@ export class ClientConnection {
   
   get helloEvent(): EventListener<HelloMsg> {
     return this._helloEvent.listener
+  }
+  
+  get changeStateEvent(): EventListener<ChangeStateMsg> {
+    return this._changeStateEvent.listener
   }
   
   send(msg: ServerMessageContainer) {

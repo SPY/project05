@@ -3,10 +3,10 @@
         "module": "commonjs",
         "target": "es6",
         "noImplicitAny": true,
-        "outDir": "./build",
-        "rootDir": ".",
+        "rootDir": "../",
         "sourceMap": true,
-        "experimentalAsyncFunctions": true
+        "experimentalAsyncFunctions": true,
+        "moduleResolution": "classic"
     },
     "exclude": [
         "node_modules"

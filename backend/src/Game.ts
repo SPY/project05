@@ -8,7 +8,7 @@ import {connection as WSConnection} from 'websocket'
 import {Player} from './Player'
 import {ClientConnection} from './ClientConnection'
 
-const SYNC_INTERVAL = 200
+const SYNC_INTERVAL = 20
 
 export class Game {
   private players: Player[] = [];
@@ -36,7 +36,9 @@ export class Game {
   }
   
   collectSync(): SyncMsg {
+    const timestamp = Date.now()
     return {
+      timestamp,
       objects: this.players.map(player => ({
         type: GameObjectType.Player,
         state: player.state()

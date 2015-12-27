@@ -33,6 +33,7 @@ export enum ServerMessageType {
 }
 
 export interface SyncMsg {
+  timestamp: number;
   objects: GameObjectDescription[];
 }
 
@@ -40,7 +41,7 @@ export interface GameEnterMsg extends SyncMsg {
   playerId: string;
 }
 
-export type ServerMessage = SyncMsg | GameEnterMsg;
+export type ServerMessage = SyncMsg | GameEnterMsg
 
 export interface ServerMessageContainer {
   type: ServerMessageType;
@@ -50,7 +51,8 @@ export interface ServerMessageContainer {
 // Client messages
 
 export enum ClientMessageType {
-  HelloMsg = 200
+  HelloMsg = 200,
+  ChangeStateMsg
 }
 
 export interface HelloMsg {
@@ -58,7 +60,14 @@ export interface HelloMsg {
   gameId: string;
 }
 
-export type ClientMessage = HelloMsg;
+export interface ChangeStateMsg {
+  left: boolean;
+  right: boolean;
+  jump: boolean;
+  fall: boolean;
+}
+
+export type ClientMessage = HelloMsg | ChangeStateMsg
 
 export interface ClientMessageContainer {
   type: ClientMessageType;
