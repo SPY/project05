@@ -16,7 +16,6 @@
     "extract-text-webpack-plugin": "^0.9.1",
     "less": "^2.5.3",
     "less-loader": "^2.2.2",
-    "matter-js": "^0.8.0",
     "tslint": "^3.2.1",
     "tslint-loader": "^2.1.0",
     "typescript": "^1.7.5",
