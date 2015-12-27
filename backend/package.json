@@ -1,0 +1,22 @@
+{
+  "name": "project05-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "grunt",
+    "dev": "node --harmony build/index.js"
+  },
+  "author": "Ilya Rezvov",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-ts": "^5.3.0-beta.3",
+    "typescript": "^1.7.5"
+  },
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}

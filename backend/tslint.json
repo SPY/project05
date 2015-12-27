@@ -1,0 +1,41 @@
+{
+  "rules": {
+    "align": [
+      true,
+      "parameters",
+      "statements"
+    ],
+    "curly": true,
+    "eofline": true,
+    "indent": [true, "spaces"],
+    "quotemark": [true, "single"],
+    "max-line-length": [true, 120],
+    "semicolon": false,
+    "triple-equals": [true, "allow-null-check"],
+    "typedef-whitespace": [true, {
+      "call-signature": "nospace",
+      "index-signature": "nospace",
+      "parameter": "nospace",
+      "property-declaration": "nospace",
+      "variable-declaration": "nospace"
+    }],
+    "no-console": [true,
+      "log",
+      "debug",
+      "info",
+      "time",
+      "timeEnd",
+      "trace"
+    ],
+    "no-construct": true,
+    "no-debugger": true,
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-separator",
+      "check-type"
+    ]
+  }
+}
